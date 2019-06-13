@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import api from "../services/api";
 import "./Feed.css";
 
 import more from "../assets/more.svg";
@@ -7,69 +8,56 @@ import comment from "../assets/comment.svg";
 import send from "../assets/send.svg";
 
 class Feed extends Component {
-  render() {
-    return (
-      <section id="post-list">
-        <article>
-          <header>
-            <div className="user-info">
-              <span>Diego Souza</span>
-              <span className="place">Piracicaba, SP</span>
-            </div>
+	state = {
+		feed: []
+	};
 
-            <img src={more} alt="Mais" />
-          </header>
+	async componentDidMount() {
+		const response = await api.get("posts");
 
-          <img src="http://localhost:3333/files/1.jpg" alt="" />
+		this.setState({
+			feed: response.data
+		});
+	}
 
-          <footer>
-            <div className="actions">
-              <img src={like} alt="Like" />
-              <img src={comment} alt="Comment" />
-              <img src={send} alt="Send" />
-            </div>
+	render() {
+		return (
+			<section id="post-list">
+				{this.state.feed.map(post => (
+					<article key={post._id}>
+						<header>
+							<div className="user-info">
+								<span>{post.author}</span>
+								<span className="place">{post.place}</span>
+							</div>
 
-            <strong>60 curtidas</strong>
+							<img src={more} alt="Mais" />
+						</header>
 
-            <p>
-              Um post muito legal da omnistack, criando uma página estilo
-              Instagram.
-              <span>#top #instagram #rocketseat</span>
-            </p>
-          </footer>
-        </article>
+						<img
+							src={`http://localhost:3333/files/${post.image}`}
+							alt={post.author}
+						/>
 
-        <article>
-          <header>
-            <div className="user-info">
-              <span>Diego Souza</span>
-              <span className="place">Piracicaba, SP</span>
-            </div>
+						<footer>
+							<div className="actions">
+								<img src={like} alt="Like" />
+								<img src={comment} alt="Comment" />
+								<img src={send} alt="Send" />
+							</div>
 
-            <img src={more} alt="Mais" />
-          </header>
+							<strong>{post.likes} curtidas</strong>
 
-          <img src="http://localhost:3333/files/1.jpg" alt="" />
-
-          <footer>
-            <div className="actions">
-              <img src={like} alt="Like" />
-              <img src={comment} alt="Comment" />
-              <img src={send} alt="Send" />
-            </div>
-
-            <strong>60 curtidas</strong>
-
-            <p>
-              Um post muito legal da omnistack, criando uma página estilo
-              Instagram.
-              <span>#top #instagram #rocketseat</span>
-            </p>
-          </footer>
-        </article>
-      </section>
-    );
-  }
+							<p>
+								{post.description}
+								<span>{post.hashtags}</span>
+							</p>
+						</footer>
+					</article>
+				))}
+			</section>
+		);
+	}
 }
 
 export default Feed;
