@@ -19,7 +19,7 @@ yarn install
 yarn start
 ```
 
-## Run tests
+## Run Tests
 
 ```sh
 yarn test
@@ -31,7 +31,7 @@ yarn test
 2. MongoDB Atlas
 3. CSS
 
-## TODO LIST
+## TODO List
 
 1. Comentários na postagem
 2. Efeitos no ícone do LIKE ❤️
